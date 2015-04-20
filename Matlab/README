@@ -1,0 +1,4 @@
+Ani: teen jonkinlaisen initialisaatiopätkän, jolla saadaan hiukkasten sijainti ja nopeus alustettua.
+sitten siihen jonkun yksinkertaisen 1D ja 2D hiukkasten alkupaikkajaon, ja laatikoiden luonnin, ei se iso lisä ole, että
+"on olemassa tällainen laatikkojako johon hiukkasia voitaisiin sijoittaa", olettaen että laatikot on vakiokokoisia läpi laskun.
+Toki se kerneli sit määrää monenko laatikon säteellä otetaan huomioon muita.
