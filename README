@@ -3,6 +3,7 @@
 Muutosten teko (ts. käytä kun olet tehnyt tiedostoon muutoksia/lisäät tiedoston):
 
 git add <tiedosto>
+(git checkout -- <tiedosto> ignoroi muutokset)
 
 Muutosten lokaali lisäys 'virallisiksi' (hyvä ajaa suht usein):
 
