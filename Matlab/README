@@ -2,3 +2,5 @@ Ani: teen jonkinlaisen initialisaatiopätkän, jolla saadaan hiukkasten sijainti
 sitten siihen jonkun yksinkertaisen 1D ja 2D hiukkasten alkupaikkajaon, ja laatikoiden luonnin, ei se iso lisä ole, että
 "on olemassa tällainen laatikkojako johon hiukkasia voitaisiin sijoittaa", olettaen että laatikot on vakiokokoisia läpi laskun.
 Toki se kerneli sit määrää monenko laatikon säteellä otetaan huomioon muita.
+
+density funktiossa partikkelit annetaan matriisinina partikkelit*dimensiot -> jos siis viitsit Ville katsoa, että rajapinta toimii noiden sun partikkelien sijaintien kanssa (eli matriisin dimensiot samalla tavalla). Tällä hetkellä vasta 2D laskut onnistuu (calc_distance_2D rajoittaa). - Aapo
