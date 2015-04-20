@@ -1,6 +1,16 @@
-Ani: teen jonkinlaisen initialisaatiopätkän, jolla saadaan hiukkasten sijainti ja nopeus alustettua.
-sitten siihen jonkun yksinkertaisen 1D ja 2D hiukkasten alkupaikkajaon, ja laatikoiden luonnin, ei se iso lisä ole, että
-"on olemassa tällainen laatikkojako johon hiukkasia voitaisiin sijoittaa", olettaen että laatikot on vakiokokoisia läpi laskun.
-Toki se kerneli sit määrää monenko laatikon säteellä otetaan huomioon muita.
-
 density funktiossa partikkelit annetaan matriisinina partikkelit*dimensiot -> jos siis viitsit Ville katsoa, että rajapinta toimii noiden sun partikkelien sijaintien kanssa (eli matriisin dimensiot samalla tavalla). Tällä hetkellä vasta 2D laskut onnistuu (calc_distance_2D rajoittaa). - Aapo
+
+
+Tehtiinpä toisistamme tietämättä samalla logiikalla indeksoinnit.
+r = matriisi(N, dim)  eli 2. indeksi on komponentit ja ensimmäinen on itse hitu. Samoin nopeudella.
+
+init_2D_test.m  on vain testiscripti, se alustaa r, v kuntoon (hiukkasilla on siis oikeat sijainnit! 2D)
+
+random_box_2D.m syö hitujen määrän ja laatikon nurkkapisteet, tekee hiduille sijainnit
+randomisti keskellä olevaan laatikkoon
+
+Initializing.m  alustaa r ja v nollaksi, mutta antaa ulos myös grid:n, joka on yksi pitkä cell-vektori johon indeksoida laatikoissa olevat hidut.
+
+Kirjotan myöhemmin funktiokuvaukset kivemmiksi tai jotain :D
+
+
