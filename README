@@ -1,0 +1,25 @@
+# Comp Phys esitelmä
+
+Muutosten teko (ts. käytä kun olet tehnyt tiedostoon muutoksia/lisäät tiedoston):
+
+git add <tiedosto>
+
+Muutosten lokaali lisäys 'virallisiksi' (hyvä ajaa suht usein):
+
+git commit -m "Viesti"
+
+Kertoo tiedostopuun tämänhetkisen tilan (mm. mihin tiedostoihin on tehty muutoksia):
+
+git status
+
+Ennen kuin lisäätte muutoksia nettiin, ajakaa (hakee muiden tekemät muutokset
+viimeisimmän syncauksen jälkeen):
+
+git pull --rebase
+
+Tämä liimaa muiden tekemät muutokset omiin muutoksiisi ja voit (gitin ohjeita
+hyödyntäen) parsia konfliktoineet tiedostot yhteen. Git on usein fiksu ja osaa 
+tehdä liitokset itse. Tämän jälkeen pitäisi olla turvallista ajaa varsinainen
+muutosten päivitys pilveen:
+
+git push
