@@ -1,0 +1,52 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref, url}
+\usepackage{listings}
+\usepackage[margin=1in]{geometry}
+\usepackage{float}
+
+
+\begin{document}
+\title{Muistiinpanoja teoriasta yms.}
+\author{}
+\date{}
+\maketitle
+
+Hyödyllisiä linkkejä: \url{http://arxiv.org/pdf/1007.1245.pdf} ja 
+\url{http://fab.cba.mit.edu/classes/864.14/students/Skuhersky_Michael/explosion/index.html}.
+
+Seurattavia suureita hiukkasten sijainnit ja nopeudet. Näistä lasketaan kullakin aika-askeleella
+tiheydet ja kiihtyvyydet. Kiihtyvyyksiä varten tarvitaan lauseke paineelle. Tämä voidaan laskea
+yleensä tiheyden avulla, mutta usein tiheyden lausekkeessa tunnutaan käyttävän myös räjähdysrintaman
+etenemisnopeutta kuvaavaa termiä.
+
+Tiheyden laskeminen hiukkasen $j$ kohdalla:
+\begin{equation}
+ \rho_j = \sum_{i \neq j} m_i W_{ji}.
+\end{equation}
+Kiihtyvyyden laskeminen:
+\begin{equation}
+ \mathbf{a}_j = - \sum_{i \neq j} m_i \left( \frac{P_j}{\rho_j^2} + \frac{P_i}{\rho_i^2} \right) \nabla_j W_{ji}.
+\end{equation}
+Tähän perään voisi lisäillä laskentametodeja paineelle hiukkasen i kohdalla. Yksinkertaisin formaatti olisi
+tiheyteen verrannollinen paine (ideaalikaasu).
+
+Leap-frog algoritmi: lasketaan ensin nopeus ja paikka puolen aika-askelen päässä.
+\begin{eqnarray}
+ \mathbf{v}_{i+1/2} = \mathbf{v}_i + \frac{\Delta t}{2} \mathbf{a}_i \\
+ \mathbf{x}_{i+1/2} = \mathbf{x}_i + \frac{\Delta t}{2} \mathbf{v}_i
+\end{eqnarray}
+Lasketaan näistä tarpeelliset suureet (kuten tiheys) puolen aika-askelen päässä. Nyt
+\begin{eqnarray}
+ \mathbf{v}_{i+1} = \mathbf{v}_i + \Delta t \mathbf{a}_{i+1/2} \\
+ \mathbf{x}_{i+1} = \mathbf{x}_i + \frac{\Delta t}{2} ( \mathbf{v}_i + \mathbf{v_{i+1}} )
+\end{eqnarray}
+Huomionarvoista erot käsittelyssä matkalla puolen aika-askelen päähän ja kokonaisen aika-askelen päähän,
+muutenhan missään ei olisi mitään järkeä.
+
+
+\end{document}
