@@ -1,4 +1,22 @@
-Viskositeettitermi vaikuttaisi toimivan, mutta se ei vaikuta tuohon testitilanteeseen. Sen merkitys pitäisi kaiketi näkyä vain, jos partikkeliaallot yrittävät mennä toistensa läpi/kohdata. Aion katsoa seuraavaksi optimoitavaa aika-askeleen pituutta, mutta en lisää mitään koodia ennen perjantaita (äkkilähtö Keski-Suomeen, mutta olen takaisin koneen ääressä perjantaina). - Aapo
+Nyt testcase.m:n testi toimii yleisesti ottaen ihan kivasti, yhdistelin Aapon
+viimeisimmät muutokset omiini näin illan päätteeksi. Demo osoittaa, että tämänhetkisillä
+algoritmeillä muutama kymmenen hiukkasta pyörii vielä jonkinlaisella nopeudella,
+mutta sen korkeammassa suuruusluokassa päädytään kiusallisen hitaaseen tilanteeseen.
+
+Päädyin käyttämään tuossa testissä vielä yksinkertaistettua versiota 
+random-generoiduista aloitussijainneista, kun tuohon hätään kummemmille ominaisuuksille
+ei ollut tarvetta.
+
+Graafinen esitys voisi myös olla harkinnan arvoinen, tällä hetkellä plottailen
+vain hiukkasten sijainteja. Ajoista tulee luultavasti sen verran hitaita optimoidussakin
+tapauksessa, että niistä on syytä tehdä animoituja klippejä etukäteen (vaihtoehto:
+sijaintidatan tallentaminen ja näyttäminen matlabissa).- Hannu
+
+Viskositeettitermi vaikuttaisi toimivan, mutta se ei vaikuta tuohon testitilanteeseen.
+Sen merkitys pitäisi kaiketi näkyä vain, jos partikkeliaallot yrittävät mennä
+toistensa läpi/kohdata. Aion katsoa seuraavaksi optimoitavaa aika-askeleen pituutta,
+mutta en lisää mitään koodia ennen perjantaita (äkkilähtö Keski-Suomeen, mutta olen
+takaisin koneen ääressä perjantaina). - Aapo
 
 
 Tehtiinpä toisistamme tietämättä samalla logiikalla indeksoinnit.

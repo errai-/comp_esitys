@@ -22,7 +22,7 @@ for tCurr = 0:tStep:tInterval
     % Loop logistics
     if ( mod(iter,printLen) == 0 )
         display(tCurr);
-        plot(locations(:,1),locations(:,2),'*');
+        plot(locations(:,1),locations(:,2),'.');
         axis([-windowScale,windowScale,-windowScale,windowScale]);
         pause;
     end
