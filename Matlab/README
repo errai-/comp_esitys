@@ -1,4 +1,4 @@
-density funktiossa partikkelit annetaan matriisinina partikkelit*dimensiot -> jos siis viitsit Ville katsoa, että rajapinta toimii noiden sun partikkelien sijaintien kanssa (eli matriisin dimensiot samalla tavalla). Tällä hetkellä vasta 2D laskut onnistuu (calc_distance_2D rajoittaa). - Aapo
+Viskositeettitermi vaikuttaisi toimivan, mutta se ei vaikuta tuohon testitilanteeseen. Sen merkitys pitäisi kaiketi näkyä vain, jos partikkeliaallot yrittävät mennä toistensa läpi/kohdata. Aion katsoa seuraavaksi optimoitavaa aika-askeleen pituutta, mutta en lisää mitään koodia ennen perjantaita (äkkilähtö Keski-Suomeen, mutta olen takaisin koneen ääressä perjantaina). - Aapo
 
 
 Tehtiinpä toisistamme tietämättä samalla logiikalla indeksoinnit.
