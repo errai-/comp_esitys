@@ -1,4 +1,4 @@
-function [r, v, grid] = Initilizing( N, dim, dim_sizes, cell_size )
+function [r, v, grid] = Initializing( N, dim, dim_sizes, cell_size )
 %Alustaa hitujen sijainnit, nopeudet ja luo cell:n johon indeksoida missä
 %laatikossa hidut ovat
 
