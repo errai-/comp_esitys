@@ -50,7 +50,27 @@ for i=1:particle_count
         if (j == i), continue; end
         r = calc_distance_2D(locations(j,:),locations(i,:));
         direction = (-locations(j,:)+locations(i,:))/r;
-        tmpAccel = m*direction*(pressures(i)/densities(i)^2+pressures(j)/densities(j)^2)*...
+        
+        % calculate artificial viscosity (the uppercase pi_ij term)
+        viscosity_condition = dot(velocities(i,:) - velocities(j,:),...
+            locations(i,:) - locations(j,:)); % v_ij*r_ij
+        if viscosity_condition < 0
+            ave_density = (densities(i) + densities(j))/2;
+            alpha = 1; % from the book
+            beta = 10; % large value to prevent unphysical penetration in the exposion
+            epsilon = 0.01; % from the arxiv article;
+            mu = h*viscosity_condition/(calc_distance_2D(locations(i,:),...
+                locations(j,:))^2 + epsilon*h^2);
+            c_i = sqrt(gamma*kappa*densities(i)^(gamma - 1)); % sound speed dP/d(rho)
+            c_j = sqrt(gamma*kappa*densities(j)^(gamma - 1));
+            ave_c = (c_i + c_j)/2; % average sound speed
+            viscosity = (-alpha*ave_c*mu + beta*mu^2)/ave_density; % standard SPH viscous term
+        else
+            viscosity = 0;
+        end
+        
+        tmpAccel = m*direction*(pressures(i)/densities(i)^2+pressures(j)/densities(j)^2+...
+        viscosity)*...
             cubic_spline_kernel_gradient(r,h);
         accelerations(i,:) = accelerations(i,:) - tmpAccel;
         accelerations(j,:) = accelerations(j,:) + tmpAccel;
