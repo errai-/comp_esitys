@@ -1,10 +1,9 @@
-function accelerations = acceleration_total( locations,velocities,h)
+function accelerations = acceleration_total( locations,velocities,h,m,kappa,gamma)
 % i) Finds a reasonable "important neighbors" listing
 % ii) Calculates densities
 % iii) Calculates finally accelerations, dumps all other temporary data
 
 %% Initialization
-m = 1;
 particle_count = size(velocities,1);
 
 rVals = cell(particle_count,1);
@@ -12,7 +11,7 @@ neighbors = cell(particle_count,1);
 
 densities = zeros(particle_count,1);
 accelerations = zeros(size(velocities));
-pressures = zeros(particle_count,1);
+pressure_per_rhos = zeros(particle_count,1);
 
 %% Naive neighbor listing, takes into account overlap
 % TODO: intelligent neighbor listing
@@ -47,11 +46,9 @@ end
 %% Calculate pressure
 % using Eq.3.38 and 3.91 from the arxiv article, for gamma the value was
 % taken from the book (usually used in HE simulations)
-gamma = 3;
-kappa = 1; % this entropic function is constant for isentropic flow (assumed)
+% The entropic function kappa is constant by assumption
 for i = 1:particle_count
-    internal_energy = kappa/(gamma - 1)*densities(i)^(gamma - 1);
-    pressures(i) = (gamma - 1)*densities(i)*internal_energy;
+    pressure_per_rhos(i) = kappa*densities(i)^(gamma-1);
 end
 
 %% Calculate accelerations:
@@ -82,12 +79,8 @@ for i=1:particle_count
             viscosity = 0;
         end
         
-        tmpAccel = m*direction*(pressures(i)/densities(i)^2+pressures(j)/densities(j)^2+...
-        viscosity)*...
-            cubic_spline_kernel_gradient(r,h);
-        display(tmpAccel);
-        display(pressures(i));
-        display(densities(i));
+        tmpAccel = m*direction*(pressure_per_rhos(i)/densities(i)+pressure_per_rhos(j)/densities(j)+...
+            viscosity)*cubic_spline_kernel_gradient(rTmp(rIdx),h);
         accelerations(i,:) = accelerations(i,:) - tmpAccel;
         accelerations(j,:) = accelerations(j,:) + tmpAccel;
     end
