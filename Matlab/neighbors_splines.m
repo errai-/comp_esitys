@@ -6,8 +6,9 @@ neighbors = cell(particle_count,1);
 
 for i=1:particle_count
     splineTmp = []; splineGradTmp = []; nbTmp = [];
+    distances = calc_distance_v2D(locations(i+1:end,:),locations(i,:));
     for j=i+1:particle_count
-        rij = calc_distance_2D(locations(j,:),locations(i,:));
+        rij = distances(j-i,:);
         hij = (hVals(i)+hVals(j))/2;
         if (rij < 2*hij),
             splineTmp = [splineTmp; cubic_spline_kernel(rij,hij)];
