@@ -3,7 +3,7 @@ close all;
 
 figure('Position', [1100, 100, 1049, 895]);
 
-tStep = 0.005;
+tStep = 0.01;
 tInterval = 100;
 m = 1;
 kappa = 1; % A constant coefficient for pressures
