@@ -1,5 +1,5 @@
 function [accelerations,hVals] = acceleration_total( locations,velocities,...
-    hVals,m,kappa,gamma,rho_const)
+    hVals,m,kappa,gamma,tStep)
 % i) Finds a reasonable "important neighbors" listing
 % ii) Calculates densities
 % iii) Calculates finally accelerations, dumps all other temporary data
@@ -61,8 +61,8 @@ for i=1:particle_count
     for j=1:size(neighbors{i},1),
         
         % calculate artificial viscosity (the uppercase pi_ij term)
-        viscosity_condition = dot(velocities(i,:) - velocities(j,:),...
-            locations(i,:) - locations(j,:)); % v_ij*r_ij
+        viscosity_condition = (velocities(i,:)-velocities(j,:))* ...
+            (locations(i,:) - locations(j,:))'; % v_ij*r_ij
         hij = (hVals(i)+hVals(j))/2;
         if viscosity_condition < 0
             ave_density = (densities(i) + densities(j))/2;
@@ -89,16 +89,14 @@ for i=1:particle_count
 end
 %% Update hVals
 
-%deltas = zeros(particle_count,1);
-%for i=1:particle_count
-    %for j = 1:size(neighbors{i},1),
-    %    delta = spline_gradients{i}(j,:)*(velocities(i,:)-velocities(j,:))';
-    %    deltas(i) = deltas(i) + delta;
-    %    deltas(j) = deltas(j) + delta;
-    %end
-    %hVals(i) = rho_const/sqrt(densities(i));%( 1 - deltas(i)*m/(2*densities(i)) );
-%end
-%hVals = (hVals+rho_const./sqrt(densities))/2;
-display(mean(densities));
+deltas = zeros(particle_count,1);
+for i=1:particle_count
+    for j = 1:size(neighbors{i},1),
+        delta = spline_gradients{i}(j,:)*(velocities(i,:)-velocities(j,:))';
+        deltas(i) = deltas(i) - delta;
+        deltas(j) = deltas(j) + delta;
+    end
+end
+hVals = hVals.*( ones(particle_count,1) - tStep*deltas*m./(2*densities) );
 
 end
