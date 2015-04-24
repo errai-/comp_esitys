@@ -1,5 +1,5 @@
 function [accelerations,hVals] = acceleration_total( locations,velocities,...
-    hVals,m,kappa,gamma)
+    hVals,m,kappa,gamma,rho_const)
 % i) Finds a reasonable "important neighbors" listing
 % ii) Calculates densities
 % iii) Calculates finally accelerations, dumps all other temporary data
@@ -89,14 +89,16 @@ for i=1:particle_count
 end
 %% Update hVals
 
-deltas = zeros(particle_count,1);
-for i=1:particle_count
-    for j = 1:size(neighbors{i},1),
-        delta = spline_gradients{i}(j,:)*(velocities(i,:)-velocities(j,:))';
-        deltas(i) = deltas(i) + delta;
-        deltas(j) = deltas(j) + delta;
-    end
-    %hVals(i) = hVals(i)*( 1 - deltas(i)*m/(2*densities(i)) );
-end
+%deltas = zeros(particle_count,1);
+%for i=1:particle_count
+    %for j = 1:size(neighbors{i},1),
+    %    delta = spline_gradients{i}(j,:)*(velocities(i,:)-velocities(j,:))';
+    %    deltas(i) = deltas(i) + delta;
+    %    deltas(j) = deltas(j) + delta;
+    %end
+    %hVals(i) = rho_const/sqrt(densities(i));%( 1 - deltas(i)*m/(2*densities(i)) );
+%end
+%hVals = (hVals+rho_const./sqrt(densities))/2;
+display(mean(densities));
 
 end
