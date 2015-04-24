@@ -7,44 +7,16 @@ function [accelerations,hVals] = acceleration_total( locations,velocities,...
 %% Initialization
 particle_count = size(velocities,1);
 
-% Pre-calculate the spline functions with neighbors
-splines = cell(particle_count,1);
-spline_gradients = cell(particle_count,1);
-neighbors = cell(particle_count,1);
-
-densities = zeros(particle_count,1);
 accelerations = zeros(size(velocities));
+deltas = zeros(particle_count,1);
 pressure_per_rhos = zeros(particle_count,1);
 
 %% Naive neighbor listing, takes into account overlap
 % TODO: intelligent neighbor listing
-
-for i=1:particle_count
-    splineTmp = []; splineGradTmp = []; nbTmp = [];
-    for j=i+1:particle_count
-        rij = calc_distance_2D(locations(j,:),locations(i,:));
-        hij = (hVals(i)+hVals(j))/2;
-        if (rij < 2*hij),
-            splineTmp = [splineTmp; cubic_spline_kernel(rij,hij)];
-            splineGradTmp = [splineGradTmp; cubic_spline_kernel_gradient(rij,hij)*(locations(j,:)-locations(i,:))/rij];
-            nbTmp = [nbTmp; j];
-        end
-    end
-    splines{i} = splineTmp;
-    spline_gradients{i} = splineGradTmp;
-    neighbors{i} = nbTmp;
-end
+[neighbors,splines,spline_gradients] = neighbors_splines(locations,hVals,particle_count);
 
 %% Calculate densities
-
-for i = 1:particle_count
-    densities(i) = densities(i) + m*cubic_spline_kernel(0,hVals(i)); 
-    for j=1:size(neighbors{i},1),
-        tmpDens = m*splines{i}(j);
-        densities(i) = densities(i) + tmpDens;
-        densities(neighbors{i}(j)) = densities(neighbors{i}(j)) + tmpDens;
-    end
-end
+densities = density(hVals,splines,neighbors,particle_count,m);
 
 %% Calculate pressure
 % using Eq.3.38 and 3.91 from the arxiv article, for gamma the value was
@@ -59,6 +31,10 @@ end
 for i=1:particle_count
     % Loop over neighbors not yet handled
     for j=1:size(neighbors{i},1),
+         % For hVal calculation
+        delta = spline_gradients{i}(j,:)*(velocities(i,:)-velocities(j,:))';
+        deltas(i) = deltas(i) - delta;
+        deltas(j) = deltas(j) + delta;
         
         % calculate artificial viscosity (the uppercase pi_ij term)
         viscosity_condition = (velocities(i,:)-velocities(j,:))* ...
@@ -85,18 +61,9 @@ for i=1:particle_count
         accelerations(i,:) = accelerations(i,:) + tmpAccel;
         accelerations(neighbors{i}(j),:) = accelerations(neighbors{i}(j),:) - tmpAccel;
     end
-
 end
+
 %% Update hVals
-
-deltas = zeros(particle_count,1);
-for i=1:particle_count
-    for j = 1:size(neighbors{i},1),
-        delta = spline_gradients{i}(j,:)*(velocities(i,:)-velocities(j,:))';
-        deltas(i) = deltas(i) - delta;
-        deltas(j) = deltas(j) + delta;
-    end
-end
 hVals = hVals.*( ones(particle_count,1) - tStep*deltas*m./(2*densities) );
 
 end

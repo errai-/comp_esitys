@@ -1,3 +1,8 @@
+Jykeviä muutoksia funktiorakenteessa. Tällä hetkellä saattaa kaatua pidemmällä
+ajossa; syy numeeristen virheiden kumuloituminen. Nyt mm. h:n päivitys on
+toteutettu koodiin, mikä tekee räjähdyksen leviämisestä realistisempaa.
+Plottailuasioita voisi pohtia jo vakavasti. - Hannu
+
 Nyt testcase.m:n testi toimii yleisesti ottaen ihan kivasti, yhdistelin Aapon
 viimeisimmät muutokset omiini näin illan päätteeksi. Demo osoittaa, että tämänhetkisillä
 algoritmeillä muutama kymmenen hiukkasta pyörii vielä jonkinlaisella nopeudella,
