@@ -1,4 +1,4 @@
-function [distances] = calc_distance_2D(vector,coordinates)
+function [distances] = calc_distance_v2D(vector,coordinates)
 % Calculates the distance between two particles in 2D case
 
 
