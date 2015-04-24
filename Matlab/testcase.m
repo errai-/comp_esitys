@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-figure('Position', [100, 100, 1049, 895]);
+figure('Position', [1100, 100, 1049, 895]);
 
 tStep = 0.01;
 tInterval = 100;
@@ -9,12 +9,15 @@ m = 1;
 kappa = 1; % A constant coefficient for pressures
 gamma = 3; % Exponent in the pressure function
 windowScale = 50;
-N = 16;
+N = 100;
+len = 3;
 
-hInit = 1;
-
-locations = simple_random_2D( N, [2,2] );
+locations = simple_random_2D( N, [len,len] );
 velocities = zeros(size(locations));
+
+% Approximate the initial density. This is used for initial h values
+rho_init = N/( len^2 );
+hVals = ones( N, 1 )*(1/sqrt(4*pi))*sqrt( N*m / rho_init );
 
 iter = 0;
 printLen = 100;
@@ -22,11 +25,12 @@ for tCurr = 0:tStep:tInterval
     % Loop logistics
     if ( mod(iter,printLen) == 0 )
         display(tCurr);
-        plot(locations(:,1),locations(:,2),'.');
-        axis([-windowScale,windowScale,-windowScale,windowScale]);
+        %plot(locations(:,1),locations(:,2),'.');
+        %axis([-windowScale,windowScale,-windowScale,windowScale]);
         pause;
     end
     iter = iter+1;
     
-    [locations,velocities] = update_particles(locations,velocities,hInit,tStep,m,kappa,gamma);
+    [locations,velocities,hVals] = update_particles(locations, ...
+        velocities,hVals,tStep,m,kappa,gamma);
 end
