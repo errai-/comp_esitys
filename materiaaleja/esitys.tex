@@ -139,7 +139,59 @@ as the Euler equation
 \begin{itemize}
 
 \item Begin with a 2D implementation, easy to move to 3D
-\item 
+\item Loop over timesteps and keep updating particle locations, velocities and $h$ values
+\item To obtain the changes for $\mathbf{x}$, $\mathbf{v}$ and $h$ densities and pressures need to be calculated
+\item An important sub-task is determining the significant neighbors of a particle - these are at most on the distance $2h$
+\item A naive implementation goes through all pairs and has $O(N^2)$ complexity, which can be improved
+\item EOM. can be handled with the leap-frog algorithm (or e.g. RK)
+\item Updates of $h$ can be stabilized with relaxation or with hard reset of the constant value
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Leap-Frog algorithm}
+\begin{itemize}
+
+\item The idea is to stabilize the updating schemes of velocities and locations by updating
+velocities and locations that are a half timestep apart
+\item This can be expressed so that both the velocities and densities are stored on the same
+timestep, but the algorithm still visits half-timestep values:
+\begin{eqnarray}
+ \mathbf{v}_{i+1/2} = \mathbf{v}_i + \frac{\Delta t}{2} \mathbf{a}_i \\
+ \mathbf{r}_{i+1/2} = \mathbf{r}_i + \frac{\Delta t}{2} \mathbf{v}_i
+\end{eqnarray}
+\item Full steps:
+\begin{eqnarray}
+\mathbf{v}_{i+1} = \mathbf{v}_i + \Delta t \mathbf{a}_{i+1/2} \\
+\mathbf{r}_{i+1} = \mathbf{r}_i + \frac{\Delta t}{2} ( \mathbf{v}_i + \mathbf{v}_{i+1} )
+\end{eqnarray}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Neighbor list handling}
+\begin{itemize}
+
+\item Best case $O(N^2)$: for each particle loop through particles that are after it in a list -
+each pair handled only once
+\item Ville % TODO
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Timestep optimization}
+\begin{itemize}
+
+\item Relatively small timesteps are informative, but if the steps are very small the simulation times become lengthy
+\item Aapo % TODO
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{First 2D results}
+\begin{itemize}
+
+\item Huehuehue
 
 \end{itemize}
 \end{frame}
