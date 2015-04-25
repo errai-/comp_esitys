@@ -9,7 +9,7 @@
 \beamertemplatenavigationsymbolsempty
 \setbeamertemplate{bibliography item}[text]
 \title[Explosions]{Explosions}
-\subtitle{Computational Physics presentation}
+\subtitle{Computational Physics Presentation}
 \author{Ville, Aapo, Hannu}
 
 
@@ -25,11 +25,71 @@
 
 \begin{frame}{Introduction}
 \begin{itemize}
-\item Huehuehue 
+
+\item A nice group project? $\rightarrow$ Do something completely different than during the course
+\item Idea: simulate explosions - a non-trivial and fairly interesting subject
+\item The actual implementation studies effectively an explosion of gas particles in a vacuum
+\item Unrealistic? No - very similar to the intuitive conception of explosions
+\item In an explosion the density of the gas that explodes is much higher than that of the surroundings
+\item Only when the explosive gas has expanded enough, the surrounding density becomes important - and this regime is not of interest here
+
 \end{itemize}
 \end{frame}
 
 
+\begin{frame}{Physics of an explosion}
+\begin{itemize}
 
+\item High density, pressure or temperature with respect to surroundings $\rightarrow$ explosion
+\item Start with a high-density gas cloud $\rightarrow$ the physics of the system will take care of the rest
+\item Required: fluid dynamics for compressible systems
+\item A shock wave should be produced to the progressing explosion front
+\item Handling of dynamic length scales: begin with a compressed system and end with an expanded system
+\item Only the dynamical properties of the system are studied, so temperature does not require explicit handling
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Fluid simulation}
+\begin{itemize}
+
+\item Simulating the behaviour of a fluid is highly non-trivial
+\item Handling a quickly expanding fluid is a non-trivial case within the group of fluid simulations
+\item A solution from astrophysics: smoothed particle hydrodynamics
+\item Astrophysics is familiar with changing length scales and vacuum boundary conditions - this fits well a simulation of explosions
+\item The basic idea is to model the fluid with a group of discrete particles
+\item Fluid physics are obtained by applying a smoothing kernel function to the particles
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{SPH basics}
+\begin{itemize}
+
+\item Dirac delta function $\delta (\mathbf{x})$ can be approximated using  a kernel function $W(\mathbf{x},h)$ (for instance Gaussian)
+\item A function can be represented using delta functions $\rightarrow$
+\begin{equation}
+ f(\mathbf{x}) = \int_V f(\mathbf{x}') \delta (\mathbf{x}-\mathbf{x}') d\mathbf{x}' \approx \int_V \frac{f(\mathbf{x}')}{\rho(\mathbf{x}')} W(\mathbf{x}-\mathbf{x}',h) \rho(\mathbf{x}') d\mathbf{x}' 
+\end{equation}
+\item Approximate integral over the density with a sum over point masses:
+\begin{equation}
+ f(\mathbf{x}) \approx \sum_i m_i \frac{f(\mathbf{x}_i)}{\rho_i} W( \mathbf{x} - \mathbf{x_i}, h )
+\end{equation}
+\item Now for instance the density can be calculated:
+\begin{equation}
+\rho(\mathbf{x}) \approx \sum_i m_i W( \mathbf{x} - \mathbf{x_i}, h )
+\end{equation}
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{SPH kernel functions}
+\begin{itemize}
+
+\item sus
+
+\end{itemize}
+\end{frame}
 
 \end{document}

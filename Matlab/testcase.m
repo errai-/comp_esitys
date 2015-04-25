@@ -10,7 +10,7 @@ kappa = 1; % A constant coefficient for pressures
 gamma = 3; % Exponent in the pressure function
 windowScale = 30;
 N = 300;
-len = 3;
+len = 2;
 
 locations = simple_random_2D( N, [len,len] );
 velocities = zeros(size(locations));
