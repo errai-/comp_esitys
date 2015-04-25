@@ -1,5 +1,5 @@
 function [accelerations,hVals] = acceleration_total( locations,velocities,...
-    hVals,m,kappa,gamma,tStep)
+    hVals,m,kappa,gamma,tStep,hConst)
 % i) Finds a reasonable "important neighbors" listing
 % ii) Calculates densities
 % iii) Calculates finally accelerations, dumps all other temporary data
@@ -64,6 +64,10 @@ for i=1:particle_count
 end
 
 %% Update hVals
-hVals = hVals.*( ones(particle_count,1) - tStep*deltas*m./(2*densities) );
-
+if (hConst==0),
+    hVals = hVals.*( ones(particle_count,1) - tStep*deltas*m./(2*densities) );
+else
+    hVals = hConst./sqrt( densities );
+end
+    
 end

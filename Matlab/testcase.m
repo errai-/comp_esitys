@@ -3,7 +3,7 @@ close all;
 
 figure('Position', [1100, 100, 1049, 895]);
 
-tStep = 0.01;
+tStep = 0.005;
 tInterval = 100;
 m = 1;
 kappa = 1; % A constant coefficient for pressures
@@ -23,6 +23,7 @@ hVals = ones( N, 1 )*(1/sqrt(4*pi))*sqrt( N*m / rho_init );
 [neighbors,splines,spline_gradients] = neighbors_splines(locations,hVals,N);
 densities = density(hVals,splines,neighbors,N,m);
 hVals = (1/sqrt(4*pi))*sqrt( N*m )./sqrt(densities);
+hConst = (sqrt( densities )'*hVals)/N;
 
 iter = 0;
 printLen = 1;
@@ -36,6 +37,12 @@ for tCurr = 0:tStep:tInterval
     end
     iter = iter+1;
     
+    % Hard reset for h values every 20 steps
+    if (mod(iter,20)==0 && iter~=0),
+        hTmp = hConst;
+    else
+        hTmp = 0;
+    end
     [locations,velocities,hVals] = update_particles(locations, ...
-        velocities,hVals,tStep,m,kappa,gamma);
+        velocities,hVals,tStep,m,kappa,gamma,hTmp);
 end
