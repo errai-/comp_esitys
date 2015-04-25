@@ -84,10 +84,62 @@
 \end{frame}
 
 
-\begin{frame}{SPH kernel functions}
+\begin{frame}{Smoothing kernel functions}
 \begin{itemize}
 
-\item sus
+\item Normalized and delta-like, $\int W(\mathbf{r},h) d\mathbf{r} = 1$
+\item Gaussian form would be nice, but it goes to zero only at infinite distance
+\item We use a commonly utilized cubic spline form that goes to zero at the distance of $2h$
+\item Generally, W uses $x = |\mathbf{x} - \mathbf{x}'|/h$ as a parameter and is proportional to $1/h^d$
+\item In an explosion the system expands much and it is essential to have adaptive $h$ values
+\item At particle locations $\rho h^d = \text{const.}$ is desirable
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{SPH fluid equations}
+\begin{itemize}
+
+\item Taking the time derivate of the discrete density turns out to give a discretized version of the
+continuity equation
+\item Using a hydrodynamical lagrangian, an equation of motion can be constructed that functions effectively
+as the Euler equation
+\item Similarly the internal energies could be updated if the temperatures were to be studied
+\item An artificial vicous term can be introduced, for instance $\Pi \propto v^2/\rho$
+\item This upgrades the Euler equation to handle better for instance shock fronts
+\item In a sophisticated implementation also the growth of entropy would be taken into account
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Recap. of necessary equations}
+\begin{itemize}
+
+\item The equation of motion is essential:
+\begin{equation}
+ \mathbf{a}_i = -\sum_{j \neq i} m_j \left( \frac{P_j}{\rho_j^2} + \frac{P_i}{\rho_i^2} \right) \nabla_i W_{ij} 
+\end{equation}
+\item The densities at particle locations are obtained as before:
+\begin{equation}
+\rho_i = \sum_j m_j W_{ij}
+\end{equation}
+\item The pressures are obtained from the ideal gas eos.:
+\begin{equation}
+ P = k \rho^\gamma
+\end{equation}
+\item Updating $h$ follows from $\rho h^d = \text{const.}$:
+\begin{equation}
+ \frac{d h_i}{dt} = -\frac{h_i}{\rho d} \sum_{j \neq i} m_j ( \mathbf{v}_i - \mathbf{v}_j ) \cdot \nabla_i W_{ij}
+\end{equation}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Basic implementation}
+\begin{itemize}
+
+\item Begin with a 2D implementation, easy to move to 3D
+\item 
 
 \end{itemize}
 \end{frame}
