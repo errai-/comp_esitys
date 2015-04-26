@@ -1,5 +1,5 @@
-function [accelerations,hVals] = acceleration_total( locations,velocities,...
-    hVals,m,kappa,gamma,tStep,hConst)
+function [accelerations,hVals,tStep] = acceleration_total( locations,velocities,...
+    hVals,m,kappa,gamma,hConst)
 % i) Finds a reasonable "important neighbors" listing
 % ii) Calculates densities
 % iii) Calculates finally accelerations, dumps all other temporary data
@@ -10,6 +10,12 @@ particle_count = size(velocities,1);
 accelerations = zeros(size(velocities));
 deltas = zeros(particle_count,1);
 pressure_per_rhos = zeros(particle_count,1);
+tStep_candidates = zeros(particle_count,1);
+
+% viscosity constants
+alpha = 1; % from the book
+beta = 10; % large value to prevent unphysical penetration in the exposion
+epsilon = 0.01; % from the arxiv article;
 
 %% Naive neighbor listing, takes into account overlap
 % TODO: intelligent neighbor listing
@@ -42,9 +48,6 @@ for i=1:particle_count
         hij = (hVals(i)+hVals(j))/2;
         if viscosity_condition < 0
             ave_density = (densities(i) + densities(j))/2;
-            alpha = 1; % from the book
-            beta = 10; % large value to prevent unphysical penetration in the exposion
-            epsilon = 0.01; % from the arxiv article;
             mu = hij*viscosity_condition/(calc_distance_2D(locations(i,:),...
                 locations(j,:))^2 + epsilon*hij^2);
             c_i = sqrt(gamma*kappa*densities(i)^(gamma - 1)); % sound speed dP/d(rho)
@@ -60,8 +63,36 @@ for i=1:particle_count
             spline_gradients{i}(j,:);
         accelerations(i,:) = accelerations(i,:) + tmpAccel;
         accelerations(neighbors{i}(j),:) = accelerations(neighbors{i}(j),:) - tmpAccel;
-    end
+    end  
 end
+
+%% Optimizing the time step with CFL criterion and force condition
+% Using a global time step in order to avoind information lag between the
+% particles. Eq.3.163 and 3.164 from arxiv paper (the generalized criteria
+% is not valid when starting with zero velocities)
+
+for i = 1:particle_count
+    
+    % CFL criterion
+    norm_grad_V = norm(accelerations(i,:));
+    c_i = sqrt(gamma*kappa*densities(i)^(gamma - 1));
+    if norm_grad_V < 0
+        tStep_CFL = 0.3*hVals(i)/(c_i + hVals(i)*norm_grad_V + ...
+            1.2*(alpha*c_i + beta*hVals(i)*norm_grad_V));
+    else
+        tStep_CFL = 0.3*hVals(i)/(c_i + hVals(i)*norm_grad_V);
+    end
+    % Force condition
+    tStep_force = 0.3*sqrt(hVals(i)/norm(accelerations(i,:)));
+
+    if 10*tStep_CFL < 0.1 % cheating (in the beginning the CFL time step is very small)
+        tStep_CFL = 100*tStep_CFL;
+    end
+    tStep_candidates(i) = min(tStep_CFL,tStep_force);
+end
+
+tStep = min(tStep_candidates) % the global time step
+%tStep = 0.005;
 
 %% Update hVals
 if (hConst==0),
