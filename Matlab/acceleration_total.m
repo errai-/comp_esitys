@@ -86,12 +86,21 @@ for i = 1:particle_count
     tStep_force = 0.3*sqrt(hVals(i)/norm(accelerations(i,:)));
 
     if 10*tStep_CFL < 0.1 % cheating (in the beginning the CFL time step is very small)
-        tStep_CFL = 100*tStep_CFL;
+        tStep_CFL = 10*tStep_CFL; % change here the multiplier to 100 if you want a faster start
     end
     tStep_candidates(i) = min(tStep_CFL,tStep_force);
 end
 
-tStep = min(tStep_candidates) % the global time step
+tStep = min(tStep_candidates); % the global time step
+
+% mitigating unwanted tStep behaviour close to the break down point
+if isfinite(tStep) == 0 % capture inf and NaN
+   tStep = 0.01;
+elseif tStep > 0.1
+   tStep = 0.001; 
+elseif tStep <= 0
+   tStep = 0.001; 
+end
 %tStep = 0.005;
 
 %% Update hVals
