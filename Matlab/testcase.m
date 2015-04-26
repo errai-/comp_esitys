@@ -12,6 +12,7 @@ windowScale = 30;
 N = 300;
 len = 2;
 
+%[locations,velocities] = colliding_walls(300,10);
 locations = simple_random_2D( N, [len,len] );
 velocities = zeros(size(locations));
 
@@ -27,10 +28,11 @@ hConst = (sqrt( densities )'*hVals)/N;
 
 iter = 0;
 printLen = 1;
-for tCurr = 0:tStep:tInterval
+tCurr = 0;
+while tCurr < tInterval
     % Loop logistics
     if ( mod(iter,printLen) == 0 )
-        display(tCurr);
+        %display(tCurr);
         plot(locations(:,1),locations(:,2),'.');
         axis([-windowScale,windowScale,-windowScale,windowScale]);
         drawnow;
@@ -43,6 +45,7 @@ for tCurr = 0:tStep:tInterval
     else
         hTmp = 0;
     end
-    [locations,velocities,hVals] = update_particles(locations, ...
+    [locations,velocities,hVals,tStep] = update_particles(locations, ...
         velocities,hVals,tStep,m,kappa,gamma,hTmp);
+    tCurr = tCurr + tStep;
 end
