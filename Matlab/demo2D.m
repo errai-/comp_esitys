@@ -3,9 +3,11 @@ close all;
 
 figure('Position', [1100, 100, 1049, 895]);
 
-tReset =0.1;
-tInterval = 1000;
-m = 1;
+writerObj = VideoWriter('2D');
+open(writerObj);
+
+tInterval = 2;
+m = 4;
 kappa = 1; % A constant coefficient for pressures
 gamma = 3; % Exponent in the pressure function
 windowScale = 50;
@@ -14,6 +16,8 @@ len = 2;
 
 %[locations,velocities] = colliding_walls(300,10);
 locations = simple_random_2D( N, [len,len] );
+%locations = simple_random_2D( N, [len/2,len/2] );
+%locations = simple_random_2D( N, [len/4,4*len] );
 velocities = zeros(size(locations));
 
 % Approximate the initial density. This is used for initial h values
@@ -27,7 +31,7 @@ hVals = (1/sqrt(4*pi))*sqrt( N*m )./sqrt(densities);
 hConst = (sqrt( densities )'*hVals)/N;
 
 iter = 0;
-printLen = 1;
+printLen = 4;
 tCurr = 0;
 tStep = 0;
 while tCurr < tInterval
@@ -37,6 +41,8 @@ while tCurr < tInterval
         plot(locations(:,1),locations(:,2),'.');
         axis([-windowScale,windowScale,-windowScale,windowScale]);
         drawnow;
+        frame = getframe;
+        writeVideo(writerObj,frame);
     end
     iter = iter+1;
     
@@ -44,3 +50,5 @@ while tCurr < tInterval
         velocities,hVals,m,kappa,gamma,hConst,tStep);
     tCurr = tCurr + tStep;
 end
+
+close(writerObj);
