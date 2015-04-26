@@ -4,7 +4,7 @@ close all;
 figure('Position', [1100, 100, 1049, 895]);
 
 tStep = 0.005;
-tInterval = 100;
+tInterval = 1;
 m = 1;
 kappa = 1; % A constant coefficient for pressures
 gamma = 3; % Exponent in the pressure function
@@ -26,6 +26,9 @@ densities = density(hVals,splines,neighbors,N,m);
 hVals = (1/sqrt(4*pi))*sqrt( N*m )./sqrt(densities);
 hConst = (sqrt( densities )'*hVals)/N;
 
+% tStep data for plotting (shows the tStep optimization process)
+tStep_data = [];
+
 iter = 0;
 printLen = 1;
 tCurr = 0;
@@ -35,7 +38,9 @@ while tCurr < tInterval
         %display(tCurr);
         plot(locations(:,1),locations(:,2),'.');
         axis([-windowScale,windowScale,-windowScale,windowScale]);
+        text(windowScale,windowScale,num2str(tCurr))
         drawnow;
+       
     end
     iter = iter+1;
     
@@ -48,4 +53,10 @@ while tCurr < tInterval
     [locations,velocities,hVals,tStep] = update_particles(locations, ...
         velocities,hVals,tStep,m,kappa,gamma,hTmp);
     tCurr = tCurr + tStep;
+    tStep_data(iter) = tStep;
 end
+
+figure
+plot(tStep_data)
+xlabel('Iteration')
+ylabel('Timestep')
