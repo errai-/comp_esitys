@@ -17,11 +17,7 @@ vain hiukkasten sijainteja. Ajoista tulee luultavasti sen verran hitaita optimoi
 tapauksessa, että niistä on syytä tehdä animoituja klippejä etukäteen (vaihtoehto:
 sijaintidatan tallentaminen ja näyttäminen matlabissa).- Hannu
 
-Viskositeettitermi vaikuttaisi toimivan, mutta se ei vaikuta tuohon testitilanteeseen.
-Sen merkitys pitäisi kaiketi näkyä vain, jos partikkeliaallot yrittävät mennä
-toistensa läpi/kohdata. Aion katsoa seuraavaksi optimoitavaa aika-askeleen pituutta,
-mutta en lisää mitään koodia ennen perjantaita (äkkilähtö Keski-Suomeen, mutta olen
-takaisin koneen ääressä perjantaina). - Aapo
+Kokeilin kahdella epäsymmetrisellä partikkeliseinällä, että viskositeettitermi tosiaan estää niitä läpäisemästä toisiaan. Optimoitu aika-askel on lisätty. Jouduin hieman huijaamaan simulaation alussa, koska CFL kriteeri asettaa aika-askeleen erittäin lyhyeksi ja sitä saa odotella kyllästymiseen asti. Simulaation loppupuolella aika-askel kyllä muuttuu vaihtelevalla menestyksellä, mutta lopulta simulaatio leviää käsiin kuten ilman optimointia. - Aapo
 
 
 Tehtiinpä toisistamme tietämättä samalla logiikalla indeksoinnit.
