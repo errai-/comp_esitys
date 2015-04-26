@@ -1,5 +1,5 @@
-function [accelerations,hVals,tStep] = acceleration_total( locations,velocities,...
-    hVals,m,kappa,gamma,hConst)
+function [accelerations,tStep] = acceleration_total( locations,velocities,...
+    hVals,m,kappa,gamma,tStep)
 % i) Finds a reasonable "important neighbors" listing
 % ii) Calculates densities
 % iii) Calculates finally accelerations, dumps all other temporary data
@@ -8,7 +8,6 @@ function [accelerations,hVals,tStep] = acceleration_total( locations,velocities,
 particle_count = size(velocities,1);
 
 accelerations = zeros(size(velocities));
-deltas = zeros(particle_count,1);
 pressure_per_rhos = zeros(particle_count,1);
 tStep_candidates = zeros(particle_count,1);
 
@@ -36,12 +35,7 @@ end
 % Loop over particles
 for i=1:particle_count
     % Loop over neighbors not yet handled
-    for j=1:size(neighbors{i},1),
-         % For hVal calculation
-        delta = spline_gradients{i}(j,:)*(velocities(i,:)-velocities(j,:))';
-        deltas(i) = deltas(i) - delta;
-        deltas(j) = deltas(j) + delta;
-        
+    for j=1:size(neighbors{i},1),        
         % calculate artificial viscosity (the uppercase pi_ij term)
         viscosity_condition = (velocities(i,:)-velocities(j,:))* ...
             (locations(i,:) - locations(j,:))'; % v_ij*r_ij
@@ -67,47 +61,40 @@ for i=1:particle_count
 end
 
 %% Optimizing the time step with CFL criterion and force condition
-% Using a global time step in order to avoind information lag between the
+% Using a global time step in order to avoid information lag between the
 % particles. Eq.3.163 and 3.164 from arxiv paper (the generalized criteria
 % is not valid when starting with zero velocities)
 
-for i = 1:particle_count
+if (tStep == 0),
+    for i = 1:particle_count
+        % CFL criterion
+        norm_grad_V = norm(accelerations(i,:));
+        c_i = sqrt(gamma*kappa*densities(i)^(gamma - 1));
+        if norm_grad_V < 0
+            tStep_CFL = 0.3*hVals(i)/(c_i + hVals(i)*norm_grad_V + ...
+                1.2*(alpha*c_i + beta*hVals(i)*norm_grad_V));
+        else
+            tStep_CFL = 0.3*hVals(i)/(c_i + hVals(i)*norm_grad_V);
+        end
+        % Force condition
+        tStep_force = 0.3*sqrt(hVals(i)/norm(accelerations(i,:)));
+
+        if 10*tStep_CFL < 0.1 % cheating (in the beginning the CFL time step is very small)
+            tStep_CFL = 100*tStep_CFL; % change to 10 for precision
+        end
+        tStep_candidates(i) = min(tStep_CFL,tStep_force);
+    end
     
-    % CFL criterion
-    norm_grad_V = norm(accelerations(i,:));
-    c_i = sqrt(gamma*kappa*densities(i)^(gamma - 1));
-    if norm_grad_V < 0
-        tStep_CFL = 0.3*hVals(i)/(c_i + hVals(i)*norm_grad_V + ...
-            1.2*(alpha*c_i + beta*hVals(i)*norm_grad_V));
-    else
-        tStep_CFL = 0.3*hVals(i)/(c_i + hVals(i)*norm_grad_V);
+    tStep = min(tStep_candidates); % the global time step
+
+    % mitigating unwanted tStep behaviour close to the break down point
+    if isfinite(tStep) == 0 % capture inf and NaN
+       tStep = 0.01;
+    elseif tStep > 0.1
+       tStep = 0.001; 
+    elseif tStep <= 0
+       tStep = 0.001; 
     end
-    % Force condition
-    tStep_force = 0.3*sqrt(hVals(i)/norm(accelerations(i,:)));
-
-    if 10*tStep_CFL < 0.1 % cheating (in the beginning the CFL time step is very small)
-        tStep_CFL = 10*tStep_CFL; % change here the multiplier to 100 if you want a faster start
-    end
-    tStep_candidates(i) = min(tStep_CFL,tStep_force);
-end
-
-tStep = min(tStep_candidates); % the global time step
-
-% mitigating unwanted tStep behaviour close to the break down point
-if isfinite(tStep) == 0 % capture inf and NaN
-   tStep = 0.01;
-elseif tStep > 0.1
-   tStep = 0.001; 
-elseif tStep <= 0
-   tStep = 0.001; 
-end
-%tStep = 0.005;
-
-%% Update hVals
-if (hConst==0),
-    hVals = hVals.*( ones(particle_count,1) - tStep*deltas*m./(2*densities) );
-else
-    hVals = hConst./sqrt( densities );
 end
     
 end
