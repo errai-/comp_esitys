@@ -102,11 +102,11 @@
 
 \item Taking the time derivate of the discrete density turns out to give a discretized version of the
 continuity equation
-\item Using a hydrodynamical lagrangian, an equation of motion can be constructed that functions effectively
+\item Using a hydrodynamical Lagrangian, an equation of motion can be constructed that functions effectively
 as the Euler equation
 \item Similarly the internal energies could be updated if the temperatures were to be studied
-\item An artificial vicous term can be introduced, for instance $\Pi \propto v^2/\rho$
-\item This upgrades the Euler equation to handle better for instance shock fronts
+\item An artificial vicous term can be introduced, for instance $\Pi \propto v^2/\rho$ - special form for HE simulations
+\item This upgrades the Euler equation to handle better for instance shock fronts (broaden the shock across several h)
 \item In a sophisticated implementation also the growth of entropy would be taken into account
 
 \end{itemize}
@@ -117,7 +117,7 @@ as the Euler equation
 
 \item The equation of motion is essential:
 \begin{equation}
- \mathbf{a}_i = -\sum_{j \neq i} m_j \left( \frac{P_j}{\rho_j^2} + \frac{P_i}{\rho_i^2} \right) \nabla_i W_{ij} 
+ \mathbf{a}_i = -\sum_{j \neq i} m_j \left( \frac{P_j}{\rho_j^2} + \frac{P_i}{\rho_i^2} + \Pi_{ij} \right) \nabla_i W_{ij} 
 \end{equation}
 \item The densities at particle locations are obtained as before:
 \begin{equation}
@@ -219,15 +219,37 @@ each pair handled only once
 \begin{itemize}
 
 \item Relatively small timesteps are informative, but if the steps are very small the simulation times become lengthy
-\item Aapo % TODO
+\item The density and velocities of the particles change during the simulation $\rightarrow$ the optimal timestep?
+\item Numerical stability and accuracy vs information lag between the particles $\rightarrow$ global timestep and lockstep evolution (here only CFL and force condition)
+
+\begin{equation}
+\delta t_{i} = \min(\delta t_{\rm CFL,i}(h),\delta t_{\rm F,i}(h),\delta t_{\rm RKF,i},\delta t_{\rm 
+z,i})
+\end{equation}
+\begin{equation}
+\delta t_{\rm glob} = \min_i{\delta t_i}
+\end{equation}
+
+\item Physical meaning: eg. CFL criterion, spatial information transfer speed $<$ local sound speed
 
 \end{itemize}
 \end{frame}
+
 
 \begin{frame}{First 2D results}
 \begin{itemize}
 
 \item Huehuehue
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+\begin{itemize}
+
+\item P. J. Cossins, Smoothed Particle Hydrodynamics, arXiv:1007.1245v2 [astro-ph.IM], 2010 
+
+\item G. R. Liu and M. B. Liu, Smoothed particle hydrodynamics - a meshfree particle method, World Scientific Publishing, Singapore, 2003
 
 \end{itemize}
 \end{frame}
