@@ -7,9 +7,9 @@ writerObj = VideoWriter('2D');
 open(writerObj);
 
 tInterval = 2;
-m = 4;
+m = 1;
 kappa = 1; % A constant coefficient for pressures
-gamma = 3; % Exponent in the pressure function
+gamma = 5/3; % Exponent in the pressure function
 windowScale = 50;
 N = 300;
 len = 2;
