@@ -172,12 +172,48 @@ timestep, but the algorithm still visits half-timestep values:
 \begin{frame}{Neighbor list handling}
 \begin{itemize}
 
-\item Best case $O(N^2)$: for each particle loop through particles that are after it in a list -
+\item Simple case $O(N^2)$: for each particle loop through particles that are after it in a list -
 each pair handled only once
-\item Ville % TODO
+\item Not all particles are used for calculating system properties (e.g. densities) at a certain location
+\item When iterating though particles, distances between the current ``center'' and other particles are calculated and too distant particles do not contribute
 
 \end{itemize}
 \end{frame}
+
+\begin{frame}{Neighbor list handling}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=10cm]{N2.png} 
+
+\end{center}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}{Neighbor list handling}
+\begin{itemize}
+
+\item The distance cutoff for the simple case leads to an intuitive alternative
+\item Compartmentalizing  $O(N)$: Form a grid, and create and maintain a list of particles inside each grid box. Then for each particle, find the particle lists of the neighboring grid boxes.
+\item Use these lists to solve relevant system properties.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Neighbor list handling}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=10cm]{N.png} 
+
+\end{center}
+\end{figure}
+
+\end{frame}
+
+
+
 
 \begin{frame}{Timestep optimization}
 \begin{itemize}
