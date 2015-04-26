@@ -17,7 +17,11 @@ vain hiukkasten sijainteja. Ajoista tulee luultavasti sen verran hitaita optimoi
 tapauksessa, että niistä on syytä tehdä animoituja klippejä etukäteen (vaihtoehto:
 sijaintidatan tallentaminen ja näyttäminen matlabissa).- Hannu
 
-Kokeilin kahdella epäsymmetrisellä partikkeliseinällä, että viskositeettitermi tosiaan estää niitä läpäisemästä toisiaan. Optimoitu aika-askel on lisätty. Jouduin hieman huijaamaan simulaation alussa, koska CFL kriteeri asettaa aika-askeleen erittäin lyhyeksi ja sitä saa odotella kyllästymiseen asti. Simulaation loppupuolella aika-askel kyllä muuttuu vaihtelevalla menestyksellä, mutta lopulta simulaatio leviää käsiin kuten ilman optimointia. - Aapo
+Kokeilin kahdella epäsymmetrisellä partikkeliseinällä, että viskositeettitermi tosiaan estää niitä läpäisemästä toisiaan. Optimoitu aika-askel on lisätty. Jouduin hieman huijaamaan simulaation alussa, koska CFL kriteeri asettaa aika-askeleen erittäin lyhyeksi ja sitä saa odotella kyllästymiseen asti. Simulaation loppupuolella aika-askel kyllä muuttuu vaihtelevalla menestyksellä, mutta lopulta simulaatio leviää käsiin kuten ilman optimointia.
+
+Uutta infoa stabiiliudesta. Tuolla neliöräjähdyksellä on ongelmia stabiiliuden kanssa suunnilleen 0.2-0.3 tienoilla. Jos siitä pääsee tuurilla ylitse niin sen jälkeen tStepin optimointiin asettamani rajat tuottavat stabiilin simulaation (vaikkakin lyhyellä aika-askeleella). Ajan tuota huvikseni melko pitkälle ja pistän sitten lopputuloksen kuvana. Reunan shokkiaalto odotetusti katoaa hiljaksiin.
+
+ - Aapo
 
 
 Tehtiinpä toisistamme tietämättä samalla logiikalla indeksoinnit.
