@@ -29,12 +29,12 @@
 \begin{frame}{Introduction}
 \begin{itemize}
 
-\item A nice group project? $\rightarrow$ Do something completely different than during the course
-\item Idea: simulate explosions - a non-trivial and fairly interesting subject
-\item The actual implementation studies effectively an explosion of gas particles in a vacuum
+\item A nice group project? $\rightarrow$ A different problem than the ones handled during the course
+\item The idea: simulate explosions - a non-trivial and fairly interesting subject
+\item The implementation studies the explosion of gas particles in a vacuum
 \item Unrealistic? No - very similar to the intuitive conception of explosions
 \item In an explosion the density of the gas that explodes is much higher than that of the surroundings
-\item Only when the explosive gas has expanded enough, the surrounding density becomes important - and this regime is not of interest here
+\item The density of the surroundings is not significant during the interesting part of the explosion
 
 \end{itemize}
 \end{frame}
@@ -59,7 +59,7 @@
 \item Simulating the behaviour of a fluid is highly non-trivial
 \item Handling a quickly expanding fluid is a non-trivial case within the group of fluid simulations
 \item A solution from astrophysics: smoothed particle hydrodynamics
-\item Astrophysics is familiar with changing length scales and vacuum boundary conditions - this fits well a simulation of explosions
+\item Astrophysics is familiar with changing length scales and vacuum boundary conditions
 \item The basic idea is to model the fluid with a group of discrete particles
 \item Fluid physics are obtained by applying a smoothing kernel function to the particles
 
@@ -91,7 +91,7 @@
 \begin{itemize}
 
 \item Normalized and delta-like, $\int W(\mathbf{r},h) d\mathbf{r} = 1$
-\item Gaussian form would be nice, but it goes to zero only at infinite distance
+\item A Gaussian form would be nice, but it goes to zero only at infinite distance
 \item We use a commonly utilized cubic spline form that goes to zero at the distance of $2h$
 \item Generally, W uses $x = |\mathbf{x} - \mathbf{x}'|/h$ as a parameter and is proportional to $1/h^d$
 \item In an explosion the system expands much and it is essential to have adaptive $h$ values
@@ -144,7 +144,7 @@ as the Euler equation
 \item Begin with a 2D implementation, easy to move to 3D
 \item Loop over timesteps and keep updating particle locations, velocities and $h$ values
 \item To obtain the changes for $\mathbf{x}$, $\mathbf{v}$ and $h$ densities and pressures need to be calculated
-\item An important sub-task is determining the significant neighbors of a particle - these are at most on the distance $2h$
+\item An important sub-task is to determine the significant neighbors of a particle
 \item A naive implementation goes through all pairs and has $O(N^2)$ complexity, which can be improved
 \item EOM. can be handled with the leap-frog algorithm (or e.g. RK)
 \item Updates of $h$ can be stabilized with relaxation or with hard reset of the constant value
@@ -155,7 +155,7 @@ as the Euler equation
 \begin{frame}{Leap-Frog algorithm}
 \begin{itemize}
 
-\item The idea is to stabilize the updating schemes of velocities and locations by updating
+\item The idea is to stabilize the simulation by updating
 velocities and locations that are a half timestep apart
 \item This can be expressed so that both the velocities and densities are stored on the same
 timestep, but the algorithm still visits half-timestep values:
@@ -178,7 +178,7 @@ timestep, but the algorithm still visits half-timestep values:
 \item Simple case $O(N^2)$: for each particle loop through particles that are after it in a list -
 each pair handled only once
 \item Not all particles are used for calculating system properties (e.g. densities) at a certain location
-\item When iterating though particles, distances between the current ``center'' and other particles are calculated and too distant particles do not contribute
+\item When iterating through particles, distances between the current ``center'' and other particles are calculated and distant particles do not contribute
 
 \end{itemize}
 \end{frame}
@@ -213,6 +213,15 @@ each pair handled only once
 \end{center}
 \end{figure}
 
+\end{frame}
+
+
+\begin{frame}{Ville tayttaa}
+\begin{itemize}
+
+\item hehe
+
+\end{itemize}
 \end{frame}
 
 
@@ -291,10 +300,23 @@ z,i})
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Connection to physical quantities}
+\begin{itemize}
+
+\item Simple example: density
+
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Conclusions}
 \begin{itemize}
 
-\item Huehuehue
+\item Explosions were simulated using smoothed particle hydrodynamics
+\item The simulation software was implemented in 2D and in 3D
+\item Neighbour search, smoothing length $h$ and timestep size were of special interest
+\item Basic simulation schemes were demonstrated to have an intuitive physical behaviour
+\item The next things to focus on would be a better neighbour handling and $h$-updating scheme
+\item A good basic view was obtained about simulating explosions
 
 \end{itemize}
 \end{frame}
