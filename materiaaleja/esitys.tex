@@ -216,12 +216,39 @@ each pair handled only once
 \end{frame}
 
 
-\begin{frame}{Ville tayttaa}
-\begin{itemize}
+\begin{frame}{Neighbor listing effectiveness}
+\begin{table}[!ht]
 
-\item hehe
+\centering
 
-\end{itemize}
+\begin{tabular}[t]{|c|c|}
+\hline
+\multicolumn{2}{|c|}{Average time taken by calculations per timestep (s)}\\
+\hline
+\end{tabular}
+
+\hspace{2cm}
+
+\begin{tabular}[t]{|c|c|c|}
+\hline
+N & Simple & Compartmentalization \\
+\hline
+1000 & 13.5 s & 10 s \\
+2000 & 43 s & 34 s \\
+\hline
+\end{tabular}
+
+\begin{tabular}[t]{|c|c|c|}
+\hline
+N & Simple  & Compartmentalization \\
+\hline
+2000 & 46.5 s & 21 s \\
+5000 & 9+ min & 47 s (23 s)* \\
+\hline
+\end{tabular}
+\end{table}
+
+* box width doubled, search range halved
 \end{frame}
 
 
@@ -301,13 +328,26 @@ z,i})
 \end{frame}
 
 \begin{frame}{Connection to physical quantities}
-\begin{itemize}
 
-\item Simple example: density
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=10cm]{initial_D.pdf} 
 
-\end{itemize}
+\end{center}
+\end{figure}
+
 \end{frame}
 
+\begin{frame}{Connection to physical quantities}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=10cm]{after_D.pdf} 
+
+\end{center}
+\end{figure}
+
+\end{frame}
 \begin{frame}{Conclusions}
 \begin{itemize}
 
